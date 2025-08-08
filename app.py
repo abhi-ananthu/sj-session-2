@@ -9,10 +9,13 @@
 from flask import Flask
 from flask import request, Response
 import uuid
+from flask_cors import CORS
 
 from utils import createTask, viewAllTask
 
 app = Flask(__name__)
+
+CORS(app, resources={r'/*': { "origins": "*"}}, supports_credentials=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -22,10 +25,11 @@ def index():
 @app.route('/create-task', methods=['POST'])
 def create_task():
     if request.method == 'POST':
-        task_name = request.form['task_name']
-        tasks = createTask({ 'name': task_name, 'id': str(uuid.uuid4())})
+        task = request.get_json()
+        tasks = createTask({ 'name': task.get('task_name'), 'id': str(uuid.uuid4())})
         return { 'data': tasks }
     
+
 @app.route('/view-all-data', methods=['GET'])
 def getAllTasks():
     return viewAllTask()
