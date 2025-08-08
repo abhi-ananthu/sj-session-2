@@ -4,6 +4,7 @@ function handleSubmit(event) {
     const inputElement = document.querySelector('input');
     const taskName = inputElement.value;
 
+    inputElement.value = '';
     // backend integration
     console.log(`submited task ${taskName}`);
 }
